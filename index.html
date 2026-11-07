@@ -22,7 +22,7 @@ const id=q=>q.y+"-"+q.n;
 const S=()=>{try{return JSON.parse(localStorage.getItem("qb"))||{w:{},c:0,t:0}}catch(e){return{w:{},c:0,t:0}}};
 const save=s=>{try{localStorage.setItem("qb",JSON.stringify(s))}catch(e){}};
 const L="ABCDE";
-fetch("questions.json").then(r=>r.json()).then(d=>{Q=d;home()}).catch(()=>A.textContent="讀不到 questions.json（請用 GitHub Pages 開啟）");
+Promise.all(["questions.json","q2.json","q3.json","q4.json","q5.json"].map(f=>fetch(f).then(r=>r.ok?r.json():[]).catch(()=>[]))).then(a=>{Q=a.flat();if(!Q.length)throw 0;home()}).catch(()=>A.textContent="讀不到 questions.json（請用 GitHub Pages 開啟）");
 function home(){const s=S(),ys=[...new Set(Q.map(q=>q.y))];
 A.innerHTML=`<h2>學測國文刷題</h2><p class="meta">題庫 ${Q.length} 題｜累計作答 ${s.t}，答對 ${s.c}（${s.t?Math.round(s.c/s.t*100):0}%）｜錯題 ${Object.keys(s.w).length}</p>
 <button class="go" onclick="start('all')">隨機刷題</button><br>
